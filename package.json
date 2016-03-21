@@ -1,0 +1,22 @@
+{
+  "name": "linkedin-oauth",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "node test.js",
+    "start": "node server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "env2": "^2.0.7",
+    "querystring": "^0.2.0"
+  },
+  "devDependencies": {
+    "qs": "^6.1.0",
+    "shot": "^3.0.1",
+    "tape": "^4.5.1"
+  }
+}
