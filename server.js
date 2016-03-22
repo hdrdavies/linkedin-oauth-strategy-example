@@ -24,11 +24,11 @@ server.register(Auth, (err) => {
 
     let authCookieOptions = {
         password: process.env.COOKIE_PASSWORD, // Password used for encryption
-        cookie: 'TorHuw', // Name of cookie to set
+        cookie: 'TorHuwauth', // Name of cookie to set
         isSecure: false // might need to be true in production
     };
 
-    server.auth.strategy('TorHuw', 'cookie', authCookieOptions);
+    server.auth.strategy('TorHuw-cookie', 'cookie', authCookieOptions);
 
     let bellAuthOptions = {
         provider: 'linkedin',
@@ -40,9 +40,7 @@ server.register(Auth, (err) => {
 
     server.auth.strategy('linkedin-oauth', 'bell', bellAuthOptions);
 
-    server.auth.default('TorHuw');
-
-    console.log(Object.keys(server.auth));
+    server.auth.default('TorHuw-cookie');
 });
 
 server.register(Plugins, (err) => { if (err) throw err });

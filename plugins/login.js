@@ -1,5 +1,4 @@
 var querystring = require('querystring');
-const AuthCookie = require('hapi-auth-cookie');
 
 exports.register = function(server, options, next) {
 
@@ -7,17 +6,22 @@ exports.register = function(server, options, next) {
 
         method: 'GET',
         path: '/login',
-        config: { 
+        config: {
             auth: 'linkedin-oauth',
             handler: (request, reply) => {
-                  console.log('RA', request.auth);
-                if (request.auth.isAuthenticated) {
 
-                    request.auth.session.set(request.auth.credentials);
-                    return reply('Hello ' + request.auth.credentials.profile.displayName);
-                }
+              if (request.auth.isAuthenticated) {
 
-                reply('Not logged in...').code(401);
+                console.log('isAuthenticated', request.auth.isAuthenticated);
+                console.log('credentials', request.auth.credentials);
+                console.log('session', request.auth.session);
+
+                request.auth.session.set(request.auth.credentials);
+                return reply('Hello ' + request.auth.credentials.profile.displayName);
+
+              }
+
+              reply('Not logged in...').code(401);
 
             }
         }
