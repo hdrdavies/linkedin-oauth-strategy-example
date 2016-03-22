@@ -1,26 +1,25 @@
-var querystring  = require('querystring');
+var querystring = require('querystring');
+const AuthCookie = require('hapi-auth-cookie');
 
-exports.register = function (server, options, next) {
+exports.register = function(server, options, next) {
 
     server.route({
 
         method: 'GET',
         path: '/login',
-        config: {
-          auth: 'linkedin-oauth',
-          handler: (request, reply) => {
+        config: { 
+            auth: 'linkedin-oauth',
+            handler: (request, reply) => {
+                  console.log('RA', request.auth);
+                if (request.auth.isAuthenticated) {
 
-              var params = {
-                  client_id: process.env.CLIENT_ID,
-                  redirect_uri: process.env.BASE_URL,
-                  response_type: 'code',
-                  state: 'DCEeFWf45A53sdfKef424'
-              }
+                    request.auth.session.set(request.auth.credentials);
+                    return reply('Hello ' + request.auth.credentials.profile.displayName);
+                }
 
-              reply.redirect(
-                  'https://www.linkedin.com/uas/oauth2/authorization?' + querystring.stringify(params)
-              );
-          }
+                reply('Not logged in...').code(401);
+
+            }
         }
     });
 
@@ -28,5 +27,5 @@ exports.register = function (server, options, next) {
 };
 
 exports.register.attributes = {
-  name: 'Login'
+    name: 'Login'
 };

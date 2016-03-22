@@ -41,6 +41,8 @@ server.register(Auth, (err) => {
     server.auth.strategy('linkedin-oauth', 'bell', bellAuthOptions);
 
     server.auth.default('TorHuw');
+
+    console.log(Object.keys(server.auth));
 });
 
 server.register(Plugins, (err) => { if (err) throw err });
