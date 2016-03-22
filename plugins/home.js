@@ -5,14 +5,14 @@ exports.register = function (server, options, next) {
         method: 'GET',
         path: '/',
         config: {
-          auth: 'linkedin-oauth',
+          auth: false,
           handler: (request, reply) => {
 
-            reply('Home');
+            reply('Hi there, click <a href="/login">here<a> to login to our site using linkedin!');
+
           }
         }
     });
-
     return next();
 };
 
