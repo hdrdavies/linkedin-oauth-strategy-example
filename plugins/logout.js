@@ -5,15 +5,15 @@ exports.register = function (server, options, next) {
         method: 'GET',
         path: '/logout',
         config: {
-          auth: 'linkedin-oauth',
+          auth: false,
           handler: (request, reply) => {
 
-            reply('Logout');
+            request.cookieAuth.clear();
+            reply.redirect('/');
 
           }
         }
     });
-
     return next();
 };
 

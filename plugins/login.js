@@ -1,5 +1,3 @@
-var querystring = require('querystring');
-
 exports.register = function(server, options, next) {
 
     server.route({
@@ -12,21 +10,17 @@ exports.register = function(server, options, next) {
 
               if (request.auth.isAuthenticated) {
 
-                console.log('isAuthenticated', request.auth.isAuthenticated);
-                console.log('credentials', request.auth.credentials);
-                console.log('session', request.auth.session);
+                request.cookieAuth.set(request.auth.credentials);
 
-                request.auth.session.set(request.auth.credentials);
-                return reply('Hello ' + request.auth.credentials.profile.displayName);
-
+                return reply('Hello ' + request.auth.credentials.profile.name.first +
+                ', you\'re logged in...' +
+                'Click <a href=/logout>here</a> to logout'
+                );
               }
-
               reply('Not logged in...').code(401);
-
             }
         }
     });
-
     return next();
 };
 
