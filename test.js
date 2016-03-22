@@ -27,7 +27,6 @@ test('/login endpoint redirects to linkedin', (t) => {
         expected = 'www.linkedin.com';
         t.equal(actual, expected, 'redirect is to Linkedin');
 
-     
         actual= qs.parse(redirectOpts.query).client_id;
         expected= process.env.CLIENT_ID ;
         t.equal( actual, expected, 'Client Id is in redirect');
