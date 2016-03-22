@@ -51,12 +51,40 @@ server.route([{
         	}
         },
         function(error, response, body) {
+
+
             if (error) {
                 console.log(error);
             } else {
-                console.log('BODY>>>', response.statusCode, body);
-                let accessToken = JSON.parse(body).access_token;
-                reply('Success!').state('access_token', accessToken);	
+                const accessToken = JSON.parse(body).access_token; 
+
+                Request({
+                    method:'GET',
+                    headers: {
+                          authorization: 'Bearer '+ accessToken,
+                    },
+                    url:'https://api.linkedin.com/v1/people/~?',
+                    qs: {
+                        connection:'Keep-Alive',
+                        format:'json',
+                    }
+               
+                }, 
+                function (err , response , body ){
+                    if(err) { 
+                        console.log(err);
+                    } else {
+                        console.log('RESPONSE', Object.keys(response), 'UUID:', JSON.parse(response.body).id);
+
+                        var id = JSON.parse(response.body).id ; 
+                
+                        reply(response)
+                            .state('access_token', accessToken )
+                            .state('id', id);   
+                    }
+
+                });
+
             }
         });
     }
