@@ -6,18 +6,22 @@ exports.register = function (server, options, next) {
         method: 'GET',
         path: '/welcome',
         config: {
-          auth: 'linkedin-oauth',
-          handler: (request, reply) => {
+          auth: {
+            strategy:'TorHuw',
+            scope: 'admin'
+          },
+        },
+        handler: (request, reply) => {
 
-
+           return  reply('Success');
              
-          }
         }
+        
     });
 
     return next();
 };
 
 exports.register.attributes = {
-  name: 'Welcome'
+  name: 'welcome'
 };

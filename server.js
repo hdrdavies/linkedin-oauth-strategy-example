@@ -16,17 +16,34 @@ const Plugins    = [Login, Welcome, Account, Home, Logout];
 
 const server     = new Hapi.Server();
 
+
+
 server.connection({ port: 3000 });
 
-server.register(Auth, (err) => {
+server.register( Auth , (err) => {
 
     if (err) throw err;
 
+
+   
     let authCookieOptions = {
         password: process.env.COOKIE_PASSWORD, // Password used for encryption
         cookie: 'TorHuw', // Name of cookie to set
-        isSecure: false // might need to be true in production
+        isSecure: false, // might need to be true in production
+        validateFunc: function (request, session, callback) {
+
+            console.log('SESSION', session);
+
+
+            if(session.profile.id === User.id){
+                console.log('MATCH');
+            }
+            
+          
+        }
+
     };
+
 
     server.auth.strategy('TorHuw', 'cookie', authCookieOptions);
 
@@ -41,8 +58,6 @@ server.register(Auth, (err) => {
     server.auth.strategy('linkedin-oauth', 'bell', bellAuthOptions);
 
     server.auth.default('TorHuw');
-
-    console.log(Object.keys(server.auth));
 });
 
 server.register(Plugins, (err) => { if (err) throw err });
