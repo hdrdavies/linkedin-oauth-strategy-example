@@ -1,7 +1,3 @@
-var querystring = require('querystring');
-const AuthCookie = require('hapi-auth-cookie');
-
-
 
 var Users = [{ name: 'Tornado', scope: 'admin', id : 'VkekfrcDpl'},
 {name:'hurricane', scope:['admin', 'super'], id:'iIkUSpzijO'}];
@@ -19,30 +15,23 @@ exports.register = function(server, options, next) {
 
         method: 'GET',
         path: '/login',
-        config: { 
+        config: {
             auth: 'linkedin-oauth',
             handler: (request, reply) => {
-                  console.log('RA', request.auth);
-                if (request.auth.isAuthenticated) {
-                    request.cookieAuth.set(request.auth.credentials);
-                    var id =  request.auth.credentials.profile.id 
-                    
-                    getValidatedUser(id, Users) { 
-                        if(id){}
 
-                    }
+              if (request.auth.isAuthenticated) {
 
-                    
+                request.cookieAuth.set(request.auth.credentials);
 
-                    return reply('Hello ' + request.auth.credentials.profile.id);
-                }
-
-                reply('Not logged in...').code(401);
-
+                return reply('Hello ' + request.auth.credentials.profile.name.first +
+                ', you\'re logged in...' +
+                'Click <a href=/logout>here</a> to logout'
+                );
+              }
+              reply('Not logged in...').code(401);
             }
         }
     });
-
     return next();
 };
 
