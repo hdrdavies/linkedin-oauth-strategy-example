@@ -8,9 +8,11 @@ const Bell       = require('bell');
 const Logout     = require('./plugins/logout.js');
 const Login      = require('./plugins/login.js');
 const Home       = require('./plugins/home.js');
+const Super      = require('./plugins/super.js');
+const Admin      = require('./plugins/admin.js');
 
 const Auth       = [Bell, AuthCookie];
-const Plugins    = [Login, Home, Logout];
+const Plugins    = [Login, Home, Logout, Super, Admin];
 
 const server     = new Hapi.Server();
 
@@ -23,7 +25,7 @@ server.register(Auth, (err) => {
     let authCookieOptions = {
         password: process.env.COOKIE_PASSWORD,
         cookie: 'TorHuwauth',
-        isSecure: false // might need to be true in production
+        isSecure: false
     };
 
     server.auth.strategy('TorHuw-cookie', 'cookie', authCookieOptions);
@@ -33,11 +35,12 @@ server.register(Auth, (err) => {
         password: process.env.LINKEDIN_PASSWORD,
         clientId: process.env.CLIENT_ID,
         clientSecret: process.env.CLIENT_SECRET,
-        isSecure: false // might need to be true in production
+        isSecure: false
     };
 
     server.auth.strategy('linkedin-oauth', 'bell', bellAuthOptions);
     server.auth.default('TorHuw-cookie');
+
 });
 
 server.register(Plugins, (err) => { if (err) throw err });
